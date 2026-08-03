@@ -44,6 +44,24 @@ py -3 -m uvicorn api.app.main:app --reload --port 8010
 | http://localhost:8010/api/v1/domains | Registered domains |
 | http://localhost:8010/api/v1/validate | Validate RDF payload |
 
+### Spring AI advisor (v0.4)
+
+```java
+var client = new OntoHarnessClient("http://localhost:8010");
+var policy = OntologyValidationAdvisor.builder(client)
+    .domain("biomedical")
+    .failClosed(true)
+    .validateOutput(true)
+    .build();
+var advisor = OntologyValidationAdvisor.advisor(policy).build();
+
+var chatClient = ChatClient.builder(chatModel)
+    .defaultAdvisors(advisor)
+    .build();
+```
+
+Validates ` ```turtle ` fences in model output before returning to callers. Lives in `advisor/` — not upstream Spring AI.
+
 ### Validate example (valid)
 
 ```bash
@@ -103,9 +121,9 @@ ontoharness/
 | Phase | Focus |
 |-------|--------|
 | **0.1** ✅ | Vocab gate + SHACL + FastAPI validate |
-| **0.2** | MCP tools (`validate_proposal`, `get_repair_hints`) for embabel-mcp |
-| **0.3** | GapForge HITL integration — L2 blocked until `conforms: true` |
-| **0.4** | Spring AI `OntologyValidationAdvisor` (calls this sidecar) |
+| **0.2** ✅ | MCP tools in embabel-mcp (`validate_proposal`, `get_repair_hints`) |
+| **0.3** ✅ | GapForge HITL UI + L2 gate on propose/approve |
+| **0.4** ✅ | Spring AI `OntologyValidationAdvisor` (post-call Turtle validation) |
 | **0.5** | Neo4j ↔ RDF bridge for approved writes |
 
 ---
