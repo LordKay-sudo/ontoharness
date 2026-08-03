@@ -97,8 +97,18 @@ flowchart LR
   VG --> Result[ValidationResult]
   SH --> Result
   Result -->|repair_hints| Agent
-  Result -->|conforms| Commit[Neo4j / HITL — planned]
+  Result -->|conforms| Commit[Neo4j / HITL via GapForge]
 ```
+
+### Runnable demo
+
+With the API running on `:8010`:
+
+```bash
+py -3 examples/validate_demo.py
+```
+
+Shows a passing gene–disease graph, then a blocked LLM-style fabricated predicate (`bio:hasTherapeuticTarget`).
 
 ---
 
@@ -109,7 +119,8 @@ ontoharness/
 ├── domains/biomedical/     # Reference OWL + SHACL + competency questions
 ├── validator/              # Vocab gate, SHACL engine, repair hints
 ├── api/app/                # FastAPI sidecar
-├── advisor/                # Spring AI OntologyValidationAdvisor (skeleton)
+├── advisor/                # Spring AI OntologyValidationAdvisor (v0.4)
+├── examples/               # validate_demo.py — end-to-end API walkthrough
 ├── tests/
 └── requirements.txt
 ```
