@@ -1,0 +1,49 @@
+@prefix bio: <https://ontoharness.dev/biomedical#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+bio:GeneShape a sh:NodeShape ;
+    sh:targetClass bio:Gene ;
+    sh:property [
+        sh:path bio:hasSymbol ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Gene must have exactly one bio:hasSymbol." ;
+    ] .
+
+bio:DiseaseShape a sh:NodeShape ;
+    sh:targetClass bio:Disease ;
+    sh:property [
+        sh:path bio:hasIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Disease must have at least one bio:hasIdentifier." ;
+    ] .
+
+bio:AssociationShape a sh:NodeShape ;
+    sh:targetSubjectsOf bio:associatedWith ;
+    sh:property [
+        sh:path bio:associatedWith ;
+        sh:class bio:Disease ;
+        sh:minCount 1 ;
+        sh:message "Gene association must point to a bio:Disease." ;
+    ], [
+        sh:path bio:hasScore ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Association score must be between 0 and 1." ;
+    ] .
+
+bio:HypothesisShape a sh:NodeShape ;
+    sh:targetClass bio:Hypothesis ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Hypothesis must have an rdfs:label." ;
+    ] .

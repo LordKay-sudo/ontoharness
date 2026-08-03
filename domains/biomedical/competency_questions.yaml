@@ -1,0 +1,41 @@
+# Competency questions for the biomedical reference domain.
+# Each CQ documents intent; SPARQL tests can be run separately (future: auto-compile to SHACL).
+
+domain: biomedical
+namespace: https://ontoharness.dev/biomedical#
+version: "0.1.0"
+
+competency_questions:
+  - id: cq-gene-symbol
+    question: "Which genes have a symbol and at least one disease association?"
+    sparql: |
+      PREFIX bio: <https://ontoharness.dev/biomedical#>
+      SELECT ?gene ?symbol ?disease WHERE {
+        ?gene a bio:Gene ;
+              bio:hasSymbol ?symbol ;
+              bio:associatedWith ?disease .
+        ?disease a bio:Disease .
+      }
+    required_for_commit: true
+
+  - id: cq-association-score
+    question: "Are all gene-disease associations scored between 0 and 1?"
+    sparql: |
+      PREFIX bio: <https://ontoharness.dev/biomedical#>
+      ASK {
+        FILTER NOT EXISTS {
+          ?gene bio:associatedWith ?disease ;
+                bio:hasScore ?score .
+          FILTER (?score < 0 || ?score > 1)
+        }
+      }
+    required_for_commit: true
+
+  - id: cq-no-fabricated-predicates
+    question: "Does every predicate in the biomedical namespace appear in the ontology?"
+    note: "Enforced by OntoHarness closed-world vocabulary gate, not SHACL alone."
+    required_for_commit: true
+
+  - id: cq-hypothesis-label
+    question: "Does every hypothesis have a human-readable label?"
+    required_for_commit: false

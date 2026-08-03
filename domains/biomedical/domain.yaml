@@ -1,0 +1,10 @@
+domain: biomedical
+label: Biomedical reference
+description: >
+  Gene-disease associations and translational hypotheses aligned with
+  BioInsight Graph and GapForge. Demo / research use only — not clinical-grade.
+ontology: ontology.ttl
+shapes: shapes.ttl
+competency_questions: competency_questions.yaml
+policed_namespaces:
+  - https://ontoharness.dev/biomedical#

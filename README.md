@@ -1,0 +1,126 @@
+# OntoHarness
+
+**Competency-question contracts for AI agents: propose in natural language, commit only what passes SHACL.**
+
+LLMs propose graph mutations. OntoHarness validates them with a **closed-world vocabulary gate** plus **SHACL** before anything reaches Neo4j or a human review queue. All work happens in **your repos** — no upstream Spring PRs required.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab)](requirements.txt)
+
+---
+
+## Why OntoHarness
+
+Research and tooling in 2025–2026 converged on **Cognitive–Executive Separation**: LLMs propose; deterministic engines validate ([HyDRA](https://arxiv.org/html/2507.15917v2), [onto-correctness-bench](https://github.com/fabio-rovai/open-ontologies/tree/main/case-studies/onto-correctness-bench)). SHACL alone is **open-world** and blind to fabricated predicates. OntoHarness adds the missing **vocabulary gate** and ships as a composable sidecar for GapForge, BioInsight Graph, embabel-mcp, and Spring AI.
+
+| Layer | Role |
+|-------|------|
+| **Cognitive** | LLM / agent proposes Turtle triples |
+| **Executive** | OntoHarness vocab gate + SHACL |
+| **Human** | HITL review (GapForge pattern — planned) |
+| **Commit** | Approved facts → Neo4j / export |
+
+---
+
+## Quick start
+
+**Prerequisites:** Python 3.11+
+
+```bash
+git clone https://github.com/LordKay-sudo/ontoharness.git
+cd ontoharness
+py -3 -m venv .venv
+.\.venv\Scripts\pip install -r requirements.txt   # Windows
+# source .venv/bin/activate && pip install -r requirements.txt  # macOS/Linux
+
+cp .env.example .env
+py -3 -m pytest -q
+py -3 -m uvicorn api.app.main:app --reload --port 8010
+```
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:8010/docs | Interactive API |
+| http://localhost:8010/api/v1/domains | Registered domains |
+| http://localhost:8010/api/v1/validate | Validate RDF payload |
+
+### Validate example (valid)
+
+```bash
+curl -s -X POST http://localhost:8010/api/v1/validate \
+  -H "Content-Type: application/json" \
+  -d "{\"domain\":\"biomedical\",\"format\":\"turtle\",\"content\":\"@prefix bio: <https://ontoharness.dev/biomedical#> .\\nbio:g1 a bio:Gene ; bio:hasSymbol \\\"BRCA1\\\" ; bio:associatedWith bio:d1 ; bio:hasScore \\\"0.9\\\"^^<http://www.w3.org/2001/XMLSchema#decimal> .\\nbio:d1 a bio:Disease ; bio:hasIdentifier \\\"MONDO:1\\\" .\"}"
+```
+
+### Validate example (fabricated predicate — fails vocab gate)
+
+An LLM might emit `bio:hasTherapeuticTarget`. SHACL often misses it. OntoHarness catches it:
+
+```turtle
+@prefix bio: <https://ontoharness.dev/biomedical#> .
+bio:g1 a bio:Gene ;
+    bio:hasTherapeuticTarget bio:d1 .
+bio:d1 a bio:Disease .
+```
+
+Response includes `vocab_violations` and `repair_hints` for the agent repair loop.
+
+---
+
+## Architecture (v0.1)
+
+```mermaid
+flowchart LR
+  Agent[LLM / Agent] -->|proposed Turtle| API[FastAPI /api/v1/validate]
+  API --> VG[Vocab gate]
+  API --> SH[SHACL validator]
+  OWL[(domain ontology + shapes)] --> VG
+  OWL --> SH
+  VG --> Result[ValidationResult]
+  SH --> Result
+  Result -->|repair_hints| Agent
+  Result -->|conforms| Commit[Neo4j / HITL — planned]
+```
+
+---
+
+## Repository layout
+
+```
+ontoharness/
+├── domains/biomedical/     # Reference OWL + SHACL + competency questions
+├── validator/              # Vocab gate, SHACL engine, repair hints
+├── api/app/                # FastAPI sidecar
+├── advisor/                # Spring AI OntologyValidationAdvisor (skeleton)
+├── tests/
+└── requirements.txt
+```
+
+---
+
+## Roadmap
+
+| Phase | Focus |
+|-------|--------|
+| **0.1** ✅ | Vocab gate + SHACL + FastAPI validate |
+| **0.2** | MCP tools (`validate_proposal`, `get_repair_hints`) for embabel-mcp |
+| **0.3** | GapForge HITL integration — L2 blocked until `conforms: true` |
+| **0.4** | Spring AI `OntologyValidationAdvisor` (calls this sidecar) |
+| **0.5** | Neo4j ↔ RDF bridge for approved writes |
+
+---
+
+## Ecosystem
+
+| Repository | Role |
+|------------|------|
+| [bioinsight-graph](https://github.com/LordKay-sudo/bioinsight-graph) | Disease-target graph lineage |
+| [gapforge](https://github.com/LordKay-sudo/gapforge) | HITL gap hypotheses |
+| [embabel-mcp](https://github.com/LordKay-sudo/embabel-mcp) | MCP agent tools |
+| [spring-ai-data-minimization](https://github.com/LordKay-sudo/spring-ai-data-minimization) | Advisor pattern for PII — OntoHarness mirrors this for semantics |
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

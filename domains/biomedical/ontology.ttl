@@ -1,0 +1,57 @@
+@prefix bio: <https://ontoharness.dev/biomedical#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+bio: a owl:Ontology ;
+    rdfs:label "OntoHarness biomedical reference ontology"@en ;
+    rdfs:comment "Minimal schema aligned with BioInsight Graph / GapForge gene-disease associations."@en .
+
+bio:Gene a rdfs:Class ;
+    rdfs:label "Gene"@en .
+
+bio:Disease a rdfs:Class ;
+    rdfs:label "Disease"@en .
+
+bio:Protein a rdfs:Class ;
+    rdfs:label "Protein"@en .
+
+bio:Hypothesis a rdfs:Class ;
+    rdfs:label "Translational hypothesis"@en .
+
+bio:Trial a rdfs:Class ;
+    rdfs:label "Clinical trial"@en .
+
+bio:associatedWith a owl:ObjectProperty ;
+    rdfs:label "associated with"@en ;
+    rdfs:domain bio:Gene ;
+    rdfs:range bio:Disease .
+
+bio:encodedBy a owl:ObjectProperty ;
+    rdfs:label "encoded by"@en ;
+    rdfs:domain bio:Protein ;
+    rdfs:range bio:Gene .
+
+bio:hasScore a owl:DatatypeProperty ;
+    rdfs:label "association score"@en ;
+    rdfs:domain bio:Gene ;
+    rdfs:range xsd:decimal .
+
+bio:supports a owl:ObjectProperty ;
+    rdfs:label "supports hypothesis"@en ;
+    rdfs:domain bio:Gene ;
+    rdfs:range bio:Hypothesis .
+
+bio:contradicts a owl:ObjectProperty ;
+    rdfs:label "contradicts hypothesis"@en ;
+    rdfs:domain bio:Gene ;
+    rdfs:range bio:Hypothesis .
+
+bio:hasSymbol a owl:DatatypeProperty ;
+    rdfs:label "gene symbol"@en ;
+    rdfs:domain bio:Gene ;
+    rdfs:range xsd:string .
+
+bio:hasIdentifier a owl:DatatypeProperty ;
+    rdfs:label "external identifier"@en ;
+    rdfs:range xsd:string .
