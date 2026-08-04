@@ -17,8 +17,8 @@ Research and tooling in 2025–2026 converged on **Cognitive–Executive Separat
 |-------|------|
 | **Cognitive** | LLM / agent proposes Turtle triples |
 | **Executive** | OntoHarness vocab gate + SHACL |
-| **Human** | HITL review (GapForge pattern — planned) |
-| **Commit** | Approved facts → Neo4j / export |
+| **Human** | HITL review (GapForge L2 gate) |
+| **Commit** | Approved facts → `approved_rdf_turtle` export |
 
 ---
 
@@ -43,6 +43,19 @@ py -3 -m uvicorn api.app.main:app --reload --port 8010
 | http://localhost:8010/docs | Interactive API |
 | http://localhost:8010/api/v1/domains | Registered domains |
 | http://localhost:8010/api/v1/validate | Validate RDF payload |
+| http://localhost:8010/api/v1/bridge/gap-record | Project GapForge JSON → Turtle + validate |
+
+### Bridge example (GapForge record → Turtle)
+
+```bash
+curl -s -X POST http://localhost:8010/api/v1/bridge/gap-record \
+  -H "Content-Type: application/json" \
+  -d "{\"record\":{\"id\":\"gap-1\",\"claim\":\"Endpoint gap\",\"confidence\":0.6,\"genes\":[{\"id\":\"ENSG1\",\"symbol\":\"BRCA1\"}],\"disease\":{\"id\":\"MONDO:1\",\"name\":\"AD\"}}}"
+```
+
+GapForge persists `approved_rdf_turtle` on HITL approve and exposes `GET /api/v1/export/approved-rdf?program_id=...`.
+
+---
 
 ### Spring AI advisor (v0.4)
 
@@ -120,6 +133,7 @@ ontoharness/
 ├── validator/              # Vocab gate, SHACL engine, repair hints
 ├── api/app/                # FastAPI sidecar
 ├── advisor/                # Spring AI OntologyValidationAdvisor (v0.4)
+├── bridge/                 # GapForge record → Turtle projector
 ├── examples/               # validate_demo.py — end-to-end API walkthrough
 ├── tests/
 └── requirements.txt
@@ -135,7 +149,7 @@ ontoharness/
 | **0.2** ✅ | MCP tools in embabel-mcp (`validate_proposal`, `get_repair_hints`) |
 | **0.3** ✅ | GapForge HITL UI + L2 gate on propose/approve |
 | **0.4** ✅ | Spring AI `OntologyValidationAdvisor` (post-call Turtle validation) |
-| **0.5** | Neo4j ↔ RDF bridge for approved writes |
+| **0.5** ✅ | Neo4j ↔ RDF bridge (`POST /bridge/gap-record`, GapForge `GET /export/approved-rdf`) |
 
 ---
 

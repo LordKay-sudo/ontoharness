@@ -6,7 +6,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 
-from api.app.routes import domains, health, validate
+from api.app.routes import bridge, domains, health, validate
 
 
 def _domains_root() -> Path:
@@ -35,3 +35,4 @@ app = FastAPI(
 app.include_router(health.router, tags=["system"])
 app.include_router(domains.router, prefix="/api/v1", tags=["domains"])
 app.include_router(validate.router, prefix="/api/v1", tags=["validate"])
+app.include_router(bridge.router, prefix="/api/v1", tags=["bridge"])

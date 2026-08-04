@@ -55,3 +55,23 @@ bio:hasSymbol a owl:DatatypeProperty ;
 bio:hasIdentifier a owl:DatatypeProperty ;
     rdfs:label "external identifier"@en ;
     rdfs:range xsd:string .
+
+bio:gapClass a owl:DatatypeProperty ;
+    rdfs:label "GapForge taxonomy class"@en ;
+    rdfs:domain bio:Hypothesis ;
+    rdfs:range xsd:string .
+
+bio:confidence a owl:DatatypeProperty ;
+    rdfs:label "hypothesis confidence"@en ;
+    rdfs:domain bio:Hypothesis ;
+    rdfs:range xsd:decimal .
+
+bio:approvedAt a owl:DatatypeProperty ;
+    rdfs:label "HITL approval timestamp"@en ;
+    rdfs:domain bio:Hypothesis ;
+    rdfs:range xsd:dateTime .
+
+bio:provenanceHash a owl:DatatypeProperty ;
+    rdfs:label "GapForge provenance hash"@en ;
+    rdfs:domain bio:Hypothesis ;
+    rdfs:range xsd:string .
