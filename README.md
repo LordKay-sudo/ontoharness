@@ -146,7 +146,7 @@ ontoharness/
 | Phase | Focus |
 |-------|--------|
 | **0.1** ✅ | Vocab gate + SHACL + FastAPI validate |
-| **0.2** ✅ | MCP tools in embabel-mcp (`validate_proposal`, `get_repair_hints`) |
+| **0.2** ✅ | MCP tools in embabel-mcp (`validate_proposal`, `get_repair_hints`, `bridge_gap_record`, `run_gap_ontology_validate`, `export_approved_rdf`) |
 | **0.3** ✅ | GapForge HITL UI + L2 gate on propose/approve |
 | **0.4** ✅ | Spring AI `OntologyValidationAdvisor` (post-call Turtle validation) |
 | **0.5** ✅ | Neo4j ↔ RDF bridge (`POST /bridge/gap-record`, GapForge `GET /export/approved-rdf`) |
