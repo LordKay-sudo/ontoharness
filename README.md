@@ -55,6 +55,8 @@ curl -s -X POST http://localhost:8010/api/v1/bridge/gap-record \
 
 GapForge persists `approved_rdf_turtle` on HITL approve and exposes `GET /api/v1/export/approved-rdf?program_id=...`.
 
+**Full stack demo:** [gapforge/docs/ONTOHARNESS_DEMO.md](https://github.com/LordKay-sudo/gapforge/blob/main/docs/ONTOHARNESS_DEMO.md) — one `docker compose` command for GapForge + OntoHarness + embabel-mcp.
+
 ---
 
 ### Spring AI advisor (v0.4)
