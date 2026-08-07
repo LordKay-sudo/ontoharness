@@ -6,6 +6,7 @@ LLMs propose graph mutations. OntoHarness validates them with a **closed-world v
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab)](requirements.txt)
+[![Portfolio](https://img.shields.io/badge/portfolio-portfolio.lordkay.com-38bdf8)](https://portfolio.lordkay.com)
 
 ---
 
@@ -163,6 +164,7 @@ ontoharness/
 | [gapforge](https://github.com/LordKay-sudo/gapforge) | HITL gap hypotheses |
 | [embabel-mcp](https://github.com/LordKay-sudo/embabel-mcp) | MCP agent tools |
 | [spring-ai-data-minimization](https://github.com/LordKay-sudo/spring-ai-data-minimization) | Advisor pattern for PII — OntoHarness mirrors this for semantics |
+| [Portfolio](https://portfolio.lordkay.com) | Featured work index (OntoHarness, GapForge, BioInsight, PeerLens) |
 
 ---
 
