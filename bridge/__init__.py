@@ -1,0 +1,1 @@
+"""GapForge ↔ RDF bridge projectors."""

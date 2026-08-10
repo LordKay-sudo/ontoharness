@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY validator ./validator
 COPY domains ./domains
+COPY bridge ./bridge
 COPY api ./api
 COPY pytest.ini .
 
