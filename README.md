@@ -58,6 +58,18 @@ GapForge persists `approved_rdf_turtle` on HITL approve and exposes `GET /api/v1
 
 **Full stack demo:** [gapforge/docs/ONTOHARNESS_DEMO.md](https://github.com/LordKay-sudo/gapforge/blob/main/docs/ONTOHARNESS_DEMO.md) — one `docker compose` command for GapForge + OntoHarness + embabel-mcp.
 
+### Demo screenshots
+
+![OntoHarness API — validate + bridge/gap-record](docs/demo/screenshot-ontoharness-api-v0.5.png)
+
+*Sidecar Swagger on `:8010` — vocab gate, SHACL validate, GapForge bridge.*
+
+![GapForge HITL — OntoHarness vocab gate failure](docs/demo/screenshot-review-ontology-fail.png)
+
+*Same failure surfaced in the review queue: undeclared `bio:hasTherapeuticTarget` blocks approve.*
+
+More assets (WebM, terminal captures): [gapforge demo-recordings](https://github.com/LordKay-sudo/gapforge/tree/main/docs/demo-recordings) · [docs/demo/](docs/demo/README.md)
+
 ---
 
 ### Spring AI advisor (v0.4)
