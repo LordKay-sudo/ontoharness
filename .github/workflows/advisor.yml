@@ -1,0 +1,38 @@
+name: advisor
+
+on:
+  push:
+    paths:
+      - "advisor/**"
+      - ".github/workflows/advisor.yml"
+  pull_request:
+    paths:
+      - "advisor/**"
+      - ".github/workflows/advisor.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Unit tests
+        run: mvn -f advisor -q test
+
+  demo-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Install advisor + package Spring Boot demo
+        run: |
+          mvn -f advisor -q install -DskipTests
+          mvn -f advisor/examples/spring-boot-demo -q -DskipTests package

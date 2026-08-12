@@ -1,7 +1,6 @@
 package dev.ontoharness.spring;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,6 +18,9 @@ public final class TurtleBlockExtractor {
         if (text == null || text.isBlank()) {
             return List.of();
         }
-        return TURTLE_FENCE.matcher(text).results().map(Matcher::group).map(String::trim).filter(s -> !s.isEmpty()).toList();
+        return TURTLE_FENCE.matcher(text).results()
+                .map(m -> m.group(1).trim())
+                .filter(s -> !s.isEmpty())
+                .toList();
     }
 }

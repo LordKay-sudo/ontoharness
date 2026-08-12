@@ -90,6 +90,16 @@ var chatClient = ChatClient.builder(chatModel)
 
 Validates ` ```turtle ` fences in model output before returning to callers. Lives in `advisor/` — not upstream Spring AI.
 
+**Runnable demo** (stub ChatModel, no OpenAI key): [advisor/examples/spring-boot-demo](advisor/examples/spring-boot-demo/README.md)
+
+```bash
+# Terminal 1: sidecar
+py -3 -m uvicorn api.app.main:app --port 8010
+# Terminal 2: Spring Boot demo on :8088
+cd advisor && mvn -q install && cd examples/spring-boot-demo && mvn -q spring-boot:run
+curl -s -X POST http://localhost:8088/chat -H "Content-Type: application/json" -d "{\"scenario\":\"fabricated\"}"
+```
+
 ### Validate example (valid)
 
 ```bash
@@ -150,6 +160,7 @@ ontoharness/
 ├── validator/              # Vocab gate, SHACL engine, repair hints
 ├── api/app/                # FastAPI sidecar
 ├── advisor/                # Spring AI OntologyValidationAdvisor (v0.4)
+│   └── examples/spring-boot-demo/  # Runnable stub-ChatModel demo (:8088)
 ├── bridge/                 # GapForge record → Turtle projector
 ├── examples/               # validate_demo.py — end-to-end API walkthrough
 ├── tests/

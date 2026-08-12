@@ -19,7 +19,9 @@ class TurtleBlockExtractorTest {
                 ```
                 """;
         assertEquals(1, TurtleBlockExtractor.extract(text).size());
-        assertTrue(TurtleBlockExtractor.extract(text).get(0).contains("bio:Gene"));
+        String turtle = TurtleBlockExtractor.extract(text).get(0);
+        assertTrue(turtle.contains("bio:Gene"));
+        assertFalse(turtle.contains("```"));
     }
 
     @Test
