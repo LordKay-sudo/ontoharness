@@ -124,6 +124,8 @@ flowchart LR
   OWL --> SH
   VG --> Result[ValidationResult]
   SH --> Result
+  CQ[Competency SPARQL] --> Result
+  OWL --> CQ
   Result -->|repair_hints| Agent
   Result -->|conforms| Commit[Neo4j / HITL via GapForge]
 ```
@@ -165,6 +167,7 @@ ontoharness/
 | **0.3** ✅ | GapForge HITL UI + L2 gate on propose/approve |
 | **0.4** ✅ | Spring AI `OntologyValidationAdvisor` (post-call Turtle validation) |
 | **0.5** ✅ | Neo4j ↔ RDF bridge (`POST /bridge/gap-record`, GapForge `GET /export/approved-rdf`) |
+| **0.6** ✅ | Competency-question SPARQL gate (`competency_violations` on `/api/v1/validate`) |
 
 ---
 

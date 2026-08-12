@@ -1,6 +1,5 @@
 # Competency questions for the biomedical reference domain.
-# Each CQ documents intent; SPARQL tests can be run separately (future: auto-compile to SHACL).
-
+# SPARQL CQs with required_for_commit: true are evaluated at /api/v1/validate (v0.6+).
 domain: biomedical
 namespace: https://ontoharness.dev/biomedical#
 version: "0.1.0"

@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 
 from rdflib import Graph
 
+from validator.competency_questions import CompetencyViolation, check_competency_questions
 from validator.domain_loader import DomainBundle
 from validator.repair import build_repair_hints
 from validator.shacl_validator import ShaclViolation, check_shacl
@@ -16,6 +17,7 @@ class ValidationResult:
     conforms: bool
     vocab_violations: list[VocabViolation] = field(default_factory=list)
     shacl_violations: list[ShaclViolation] = field(default_factory=list)
+    competency_violations: list[CompetencyViolation] = field(default_factory=list)
     repair_hints: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
@@ -34,6 +36,14 @@ class ValidationResult:
                     "source_shape": v.source_shape,
                 }
                 for v in self.shacl_violations
+            ],
+            "competency_violations": [
+                {
+                    "cq_id": v.cq_id,
+                    "question": v.question,
+                    "message": v.message,
+                }
+                for v in self.competency_violations
             ],
             "repair_hints": self.repair_hints,
         }
@@ -58,15 +68,28 @@ class ValidationEngine:
             self._domain.ontology_graph,
             self._domain.shapes_graph,
         )
+        competency_violations = check_competency_questions(
+            data,
+            self._domain.competency_questions,
+        )
 
-        conforms = not vocab_violations and shacl_ok
-        repair_hints = build_repair_hints(vocab_violations, shacl_violations)
+        conforms = (
+            not vocab_violations
+            and shacl_ok
+            and not competency_violations
+        )
+        repair_hints = build_repair_hints(
+            vocab_violations,
+            shacl_violations,
+            competency_violations,
+        )
 
         return ValidationResult(
             domain=self._domain.name,
             conforms=conforms,
             vocab_violations=vocab_violations,
             shacl_violations=shacl_violations,
+            competency_violations=competency_violations,
             repair_hints=repair_hints,
         )
 

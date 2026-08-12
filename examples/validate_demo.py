@@ -77,7 +77,24 @@ def main() -> int:
         )
         print("   BLOCKED (this is what GapForge surfaces in the review UI)\n")
 
-        print("Done — deterministic gate caught undeclared LLM vocabulary.")
+        print("3) Score out of range (should fail competency question cq-association-score)")
+        bad_score = """
+@prefix bio: <https://ontoharness.dev/biomedical#> .
+bio:gene1 a bio:Gene ;
+    bio:hasSymbol "BRCA1" ;
+    bio:associatedWith bio:disease1 ;
+    bio:hasScore "1.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+bio:disease1 a bio:Disease ;
+    bio:hasIdentifier "MONDO:0007254" .
+"""
+        cq = post_validate(args.base_url, bad_score)
+        print(f"   conforms={cq['conforms']}")
+        print(f"   competency_violations={json.dumps(cq.get('competency_violations', []), indent=2)}")
+        assert not cq["conforms"]
+        assert any(v.get("cq_id") == "cq-association-score" for v in cq.get("competency_violations", []))
+        print("   BLOCKED by competency-question contract\n")
+
+        print("Done — vocab gate + SHACL + competency questions.")
         return 0
 
     except urllib.error.URLError as exc:
