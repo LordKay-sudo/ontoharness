@@ -2,7 +2,7 @@
 
 **Competency-question contracts for AI agents: propose in natural language, commit only what passes SHACL.**
 
-LLMs propose graph mutations. OntoHarness validates them with a **closed-world vocabulary gate** plus **SHACL** before anything reaches Neo4j or a human review queue. All work happens in **your repos** — no upstream Spring PRs required.
+LLMs propose graph mutations. OntoHarness validates them with a **closed-world vocabulary gate** plus **SHACL** before anything reaches Neo4j or a human review queue.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab)](requirements.txt)
