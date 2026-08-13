@@ -5,8 +5,12 @@
 LLMs propose graph mutations. OntoHarness validates them with a **closed-world vocabulary gate** plus **SHACL** before anything reaches Neo4j or a human review queue.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab)](requirements.txt)
 [![Portfolio](https://img.shields.io/badge/portfolio-portfolio.lordkay.com-38bdf8)](https://portfolio.lordkay.com)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](requirements.txt)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](api/app/main.py)
+[![SHACL](https://img.shields.io/badge/SHACL-validation-512BD4?logo=semanticweb&logoColor=white)](requirements.txt)
+[![RDFLib](https://img.shields.io/badge/RDFLib-7.x-006699)](requirements.txt)
+[![Spring AI](https://img.shields.io/badge/Spring_AI-advisor-6DB33F?logo=spring&logoColor=white)](docs/demo/README.md)
 
 ---
 
