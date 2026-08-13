@@ -73,11 +73,6 @@ public final class BasicUsageExample {
             public List<CallAdvisor> getCallAdvisors() {
                 return List.of();
             }
-
-            @Override
-            public CallAdvisorChain copy(CallAdvisor after) {
-                return this;
-            }
         };
     }
 
